@@ -1,5 +1,6 @@
 def carica_da_file(file_path):
     """Carica le foto dal file, creando un nuovo anno ogni volta che compare per la prima volta"""
+
     try:
         with open(file_path, 'r') as elenco_foto:
             album_fotografico={}
