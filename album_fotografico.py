@@ -1,4 +1,5 @@
 from csv import writer
+from operator import itemgetter
 
 def carica_da_file(file_path):
     """Carica le foto dal file, creando un nuovo anno ogni volta che compare per la prima volta"""
@@ -7,8 +8,13 @@ def carica_da_file(file_path):
         with open(file_path, 'r') as elenco_foto:
             album_fotografico={}
             intestazione=elenco_foto.readline()
+
             for riga in  elenco_foto:
                 (codice, titolo, autore, mese, anno) = riga.strip().split(',')
+
+                mese=int(mese)
+                anno=int(anno)
+
                 if anno not in album_fotografico:
                     album_fotografico[anno] = [[codice,titolo,autore,mese]]
                 else:
@@ -51,15 +57,25 @@ def aggiungi_foto(album, codice, titolo, autore, mese, anno, file_path):
     return nuova_foto
 
 
-
 def cerca_foto(album, codice):
     """Cerca una foto nell'album dato il codice"""
-    # TODO
+
+    for anno_album in album:
+        for elemento in album[anno_album]:
+            if codice == elemento[0]:
+                return f'{elemento[0]}, {elemento[1]}, {elemento[2]}, {elemento[3]}, {anno_album}'
+
+    return None
 
 
 def elenco_foto_anno_per_titolo(album, anno):
     """Ordina i titoli delle foto di un dato anno in ordine alfabetico"""
-    # TODO
+
+    for anno_album in album:
+        if anno==anno_album:
+            foto_ordinate=sorted(album[anno_album], key=itemgetter(1))  #ordina secondo il titolo che si trova in posizione 1 dentro ogni lista
+            return [elemento[1] for elemento in foto_ordinate]
+    return None
 
 
 def main():
